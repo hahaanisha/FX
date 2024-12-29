@@ -18,9 +18,32 @@ class _LogisticsPageState extends State<LogisticsPage> {
   bool isHgv = false;
 
   void _navigateToMapPage() {
+
+    // Parse input values to double
+    final double? startLat = double.tryParse(startLatController.text);
+    final double? startLng = double.tryParse(startLngController.text);
+    final double? endLat = double.tryParse(endLatController.text);
+    final double? endLng = double.tryParse(endLngController.text);
+    String Vtype;
+
+    if(isSmallCar==true){
+      Vtype = "driving-car";
+    }
+    else{
+      Vtype="driving-hgv";
+    }
+    // Check if any value is null (invalid input)
+    if (startLat == null || startLng == null || endLat == null || endLng == null || Vtype == null) {
+      // Show error message if inputs are invalid
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter valid numeric values for latitude and longitude.')),
+      );
+      return;
+    }
+
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => mapsPage(sLat: startLatController, sLong:startLngController, eLat:endLatController, eLong:endLngController)),
+      MaterialPageRoute(builder: (context) => mapsPage(sLat: startLat, sLong:startLng, eLat:endLat, eLong:endLng,vtype: Vtype,)),
     );
   }
 
@@ -81,6 +104,7 @@ class _LogisticsPageState extends State<LogisticsPage> {
             Row(
               children: [
                 Checkbox(
+
                   value: isSmallCar,
                   onChanged: (value) {
                     setState(() {

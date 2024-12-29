@@ -13,9 +13,11 @@ class mapsPage extends StatefulWidget {
   var eLat;
   var eLong;
 
+  var vtype;
+
   //final dynamic SLat;
 
-  mapsPage({super.key,required this.sLat,required this.sLong, required this.eLat, required this.eLong});
+  mapsPage({super.key,required this.sLat,required this.sLong, required this.eLat, required this.eLong,required this.vtype});
 
 
 
@@ -35,9 +37,14 @@ class _mapsPageState extends State<mapsPage> {
   // var EndLat = 19.177908382850912;
   // var EndLong = 72.94566251056348;
 
+  // var StartLat = 19.225129246202325;
+  // var StartLong = 73.13747988067364;
+  // var EndLat = 19.177908382850912;
+  // var EndLong = 72.94566251056348;
+
 
   getCoordinates() async{
-    var response = await http.get(getRouteUrl(widget.sLong.toString()+','+widget.sLat.toString(),widget.eLong.toString()+','+widget.eLat.toString()));
+    var response = await http.get(getRouteUrl(widget.sLong.toString()+','+widget.sLat.toString(),widget.eLong.toString()+','+widget.eLat.toString(),widget.vtype.toString()));
 
     setState(() {
       if(response.statusCode == 200){
