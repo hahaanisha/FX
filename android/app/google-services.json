@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "14870803551",
+    "project_id": "optiway-d6ee4",
+    "storage_bucket": "optiway-d6ee4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14870803551:android:8c2e281ca0e875cba797ea",
+        "android_client_info": {
+          "package_name": "com.example.gehraneela"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRYsldw3fFc-CdAvDGXS0at2DgevA56uo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
