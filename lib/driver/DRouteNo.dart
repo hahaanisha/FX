@@ -14,6 +14,9 @@ class _DriverPortalState extends State<DriverPortal> {
   final _routeIdController = TextEditingController();
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
   Map<String, dynamic>? responseRoute;
+  List<dynamic> steps = []; // Store steps from the API response
+  int currentStepIndex = 0; // Track the current step
+
 
   Future<void> fetchAndSendRouteData(String routeId) async {
     try {
@@ -76,6 +79,8 @@ class _DriverPortalState extends State<DriverPortal> {
       if (response.statusCode == 200) {
         setState(() {
           responseRoute = json.decode(response.body);
+          steps = responseRoute!['routes'][0]['steps'];
+          print(responseRoute);
         });
       } else {
         throw Exception('Failed to optimize route: ${response.body}');
@@ -86,6 +91,44 @@ class _DriverPortalState extends State<DriverPortal> {
         builder: (ctx) => AlertDialog(
           title: Text('Error'),
           content: Text(error.toString()),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+
+  void navigateToNextStop() {
+    if (currentStepIndex < steps.length - 1) {
+      setState(() {
+        currentStepIndex++;
+      });
+      final start = steps[currentStepIndex - 1]['location'];
+      final end = steps[currentStepIndex]['location'];
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => mapsPage(
+            sLat: start[1],
+            sLong: start[0],
+            eLat: end[1],
+            eLong: end[0],
+            vtype: 'driving-hgv',
+          ),
+        ),
+      );
+    } else {
+      // Route completed
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Route Completed'),
+          content: Text('You have completed all stops!'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(),
@@ -123,12 +166,8 @@ class _DriverPortalState extends State<DriverPortal> {
               SizedBox(height: 16),
               Text('Route Optimized Successfully!', style: TextStyle(fontWeight: FontWeight.bold)),
               SizedBox(height: 5),
-              ElevatedButton(onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => mapsPage(sLat: ,sLong: ,eLat: ,eLong: ,vtype: ,)),
-                );
-              }, child: Text('Navigate')),
+              ElevatedButton(onPressed: navigateToNextStop,
+                  child: Text('Navigate')),
               Expanded(
                 child: SingleChildScrollView(
                   child: Text(
