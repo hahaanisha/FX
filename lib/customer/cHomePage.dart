@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../driver/DRouteNo.dart';
 import 'AddRoutePage.dart';
 import 'AddVehiclePage.dart';
 
@@ -30,6 +31,15 @@ class AdminPortal extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AddRoutePage()),
+                );
+              },
+              child: Text('Add New Route'),
+            ),SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DriverPortal()),
                 );
               },
               child: Text('Add New Route'),
