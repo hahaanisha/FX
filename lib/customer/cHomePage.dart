@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../driver/DRouteNo.dart';
 import 'AddRoutePage.dart';
 import 'AddVehiclePage.dart';
+import '../auth/adminLogin.dart';
 
 
 class AdminPortal extends StatelessWidget {
@@ -43,6 +44,15 @@ class AdminPortal extends StatelessWidget {
                 );
               },
               child: Text('Add New Route'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AdminLogin()),
+                );
+              },
+              child: Text('Admin Login'),
             ),
           ],
         ),
