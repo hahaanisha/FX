@@ -43,7 +43,7 @@ class _LogisticsPageState extends State<LogisticsPage> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => mapsPage(sLat: startLat, sLong:startLng, eLat:endLat, eLong:endLng,vtype: Vtype,)),
+      MaterialPageRoute(builder: (context) => MapsPage(sLat: startLat, sLong:startLng, eLat:endLat, eLong:endLng,vtype: Vtype,)),
     );
   }
 

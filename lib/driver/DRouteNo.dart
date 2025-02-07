@@ -113,7 +113,7 @@ class _DriverPortalState extends State<DriverPortal> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => mapsPage(
+          builder: (context) => MapsPage(
             sLat: start[1],
             sLong: start[0],
             eLat: end[1],
