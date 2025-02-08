@@ -54,7 +54,7 @@ class _LoginPagerState extends State<LoginPager> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Welcome Mastek',
+                'Welcome Driver',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -171,32 +171,6 @@ class _LoginPagerState extends State<LoginPager> {
                   ),
                 ],
               ),
-               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Are you a driver?',
-                    style: TextStyle(color: Colors.black54),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      // Navigate to the registration page
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUpPager(),
-                        ),
-                      );
-
-                    },
-                    child: const Text(
-                      'Sign in Here',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  ),
-                ],
-              ),
-
             ],
           ),
         ),
