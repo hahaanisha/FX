@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
-import 'package:geolocator/geolocator.dart'; // For real-time location tracking
 import 'api.dart';
 
 class MapsPage extends StatefulWidget {
@@ -30,19 +29,10 @@ class MapsPage extends StatefulWidget {
 class _MapsPageState extends State<MapsPage> {
   List<LatLng> points = [];
   List<Map<String, dynamic>> steps = [];
-  int currentStepIndex = 0;
-  LatLng? driverLocation;
-  StreamSubscription<Position>? positionStream;
-  final MapController _mapController = MapController();
+  LatLng? vehicleLocation; // Vehicle's real-time location
+  String currentNavigation = "Fetching route...";
+  Timer? locationUpdateTimer;
 
-  @override
-  void initState() {
-    super.initState();
-    getCoordinates();
-    startTrackingLocation();
-  }
-
-  // Fetch route data
   Future<void> getCoordinates() async {
     var response = await http.get(
       getRouteUrl(
@@ -56,78 +46,110 @@ class _MapsPageState extends State<MapsPage> {
       var data = jsonDecode(response.body);
 
       setState(() {
+        // Extract coordinates for route
         List listOfPoints = data['features'][0]['geometry']['coordinates'];
         points = listOfPoints
             .map((e) => LatLng((e[1] as num).toDouble(), (e[0] as num).toDouble()))
             .toList();
 
+        // Extract navigation steps
         steps = (data['features'][0]['properties']['segments'][0]['steps'] as List)
             .map((step) => {
           'instruction': step['instruction'],
           'distance': (step['distance'] as num).toDouble(),
           'duration': (step['duration'] as num).toDouble(),
+          'location': LatLng((step['way_points'][0][1] as num).toDouble(),
+              (step['way_points'][0][0] as num).toDouble()),
         })
             .toList();
+
+        // Initialize vehicle location at start point
+        vehicleLocation = LatLng(widget.sLat, widget.sLong);
+        currentNavigation = "Starting navigation...";
+
+        // Start real-time location updates
+        startTrackingVehicle();
       });
+
+      print("Route Points: $points");
+      print("Navigation Steps: $steps");
     } else {
       print('Error fetching route');
     }
   }
 
-  // Start tracking the driver's real-time location
-  void startTrackingLocation() {
-    positionStream = Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.best,
-        distanceFilter: 2, // Update location every 2 meters
-      ),
-    ).listen((Position position) {
-      setState(() {
-        driverLocation = LatLng(position.latitude, position.longitude);
-      });
-
-      _mapController.move(driverLocation!, 16.0); // Move map with driver
+  void startTrackingVehicle() {
+    locationUpdateTimer?.cancel();
+    locationUpdateTimer = Timer.periodic(Duration(seconds: 2), (timer) {
+      updateVehicleLocation();
     });
   }
 
-  // Move to the next step in navigation
-  void moveToNextStep() {
-    if (currentStepIndex < steps.length - 1) {
+  void updateVehicleLocation() {
+    // Simulating real-time movement (Replace with real GPS data)
+    if (points.isNotEmpty) {
       setState(() {
-        currentStepIndex++;
-      });
+        int nextIndex = points.indexWhere((point) =>
+        vehicleLocation == null ||
+            (point.latitude > vehicleLocation!.latitude));
 
-      // Move to the next navigation step location
-      _mapController.move(points[currentStepIndex], 16.0);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('You have reached the destination!')),
-      );
+        if (nextIndex != -1 && nextIndex < points.length - 1) {
+          vehicleLocation = points[nextIndex];
+          updateNavigationInstructions();
+        }
+      });
+    }
+  }
+
+  void updateNavigationInstructions() {
+    for (var step in steps) {
+      double distanceToStep = Distance().as(
+          LengthUnit.Meter, vehicleLocation!, step['location'] as LatLng);
+
+      if (distanceToStep < 50) { // If vehicle is near a step (50m)
+        setState(() {
+          currentNavigation = step['instruction'];
+        });
+        break;
+      }
     }
   }
 
   @override
   void dispose() {
-    positionStream?.cancel();
+    locationUpdateTimer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Maps')),
+      appBar: AppBar(title: const Text('Real-Time Navigation')),
       body: Column(
         children: [
+          // Navigation Instruction Display
+          Container(
+            padding: const EdgeInsets.all(10),
+            width: double.infinity,
+            color: Colors.black,
+            child: Text(
+              currentNavigation,
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          // Map Display
           Expanded(
             child: FlutterMap(
-              mapController: _mapController,
               options: MapOptions(
-                initialZoom: 15,
+                initialZoom: 12,
+                maxZoom: 30,
                 initialCenter: LatLng(widget.sLat, widget.sLong),
               ),
               children: [
                 TileLayer(
-                  urlTemplate: 'https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=fe7095d5cf2a4a26a88875a4bd375258',
+                  urlTemplate:
+                  'https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=fe7095d5cf2a4a26a88875a4bd375258',
                   userAgentPackageName: 'dev.fleaflet.flutter_map.example',
                 ),
                 MarkerLayer(
@@ -146,13 +168,14 @@ class _MapsPageState extends State<MapsPage> {
                       height: 80,
                       child: const Icon(Icons.location_on, color: Colors.green, size: 45),
                     ),
-                    // Driver's real-time location marker
-                    if (driverLocation != null)
+                    // Vehicle Real-Time Location Marker
+                    if (vehicleLocation != null)
                       Marker(
-                        point: driverLocation!,
-                        width: 50,
-                        height: 50,
-                        child: const Icon(Icons.directions_car, color: Colors.blue, size: 35),
+                        point: vehicleLocation!,
+                        width: 60,
+                        height: 60,
+                        child: const Icon(Icons.directions_car,
+                            color: Colors.blue, size: 40),
                       ),
                   ],
                 ),
@@ -169,24 +192,27 @@ class _MapsPageState extends State<MapsPage> {
               ],
             ),
           ),
+          // Navigation Steps Display
           if (steps.isNotEmpty)
             Expanded(
-              child: Column(
-                children: [
-                  ListTile(
+              child: ListView.builder(
+                itemCount: steps.length,
+                itemBuilder: (context, index) {
+                  var step = steps[index];
+                  return ListTile(
                     leading: const Icon(Icons.directions, color: Colors.blue),
-                    title: Text(steps[currentStepIndex]['instruction']),
+                    title: Text(step['instruction']),
                     subtitle: Text(
-                        "Distance: ${steps[currentStepIndex]['distance']}m | Duration: ${steps[currentStepIndex]['duration']}s"),
-                  ),
-                  ElevatedButton(
-                    onPressed: moveToNextStep,
-                    child: const Text('Next Step'),
-                  ),
-                ],
+                        "Distance: ${step['distance']}m | Duration: ${step['duration']}s"),
+                  );
+                },
               ),
             ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: getCoordinates,
+        child: const Icon(Icons.navigation_outlined),
       ),
     );
   }
