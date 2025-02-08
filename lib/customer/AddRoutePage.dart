@@ -1,13 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import '../firebase_options.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
+    // Ensure Firebase Database works on Web
+    FirebaseDatabase.instance.setPersistenceEnabled(false);
+    FirebaseDatabase.instance.setPersistenceCacheSizeBytes(1000000);
+  } catch (e) {
+    print("Firebase Initialization Error: $e");
+  }
+
+  runApp(AdminPortalApp());
+}
 
 class AdminPortalApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: AddRoutePage(),
     );
   }
@@ -22,14 +40,14 @@ class _AddRoutePageState extends State<AddRoutePage> {
   final TextEditingController _routeNameController = TextEditingController();
   final TextEditingController _vehicleIdController = TextEditingController();
   final TextEditingController _orderIdController = TextEditingController();
-
   final TextEditingController _latController = TextEditingController();
   final TextEditingController _lngController = TextEditingController();
   final TextEditingController _timeWindowController = TextEditingController();
   String _natureOfDestination = 'Drop';
 
   final List<Map<String, dynamic>> _nodes = [];
-  final DatabaseReference _dbRef = FirebaseDatabase.instance.ref('routes');
+  final DatabaseReference _dbRef =
+  FirebaseDatabase.instance.ref().child('routes');
 
   void _addNode() {
     if (_latController.text.isNotEmpty && _lngController.text.isNotEmpty) {
@@ -43,8 +61,6 @@ class _AddRoutePageState extends State<AddRoutePage> {
           "nature": _natureOfDestination,
           "type": _nodes.isEmpty ? "start" : "stop",
         });
-
-        // Clear fields after adding
         _latController.clear();
         _lngController.clear();
         _timeWindowController.clear();
@@ -61,19 +77,15 @@ class _AddRoutePageState extends State<AddRoutePage> {
       final String customKey =
       'ROU${_orderIdController.text}V${_vehicleIdController.text}'
           .replaceAll(' ', '_');
-
       await _dbRef.child(customKey).set({
         "routeName": _routeNameController.text,
         "vehicleId": _vehicleIdController.text,
         "orderId": _orderIdController.text,
         "nodes": _nodes,
       });
-
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Route added successfully!')),
       );
-
-      // Clear all inputs and list
       setState(() {
         _routeNameController.clear();
         _vehicleIdController.clear();
@@ -91,8 +103,13 @@ class _AddRoutePageState extends State<AddRoutePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin Portal - Create Route'),
+        centerTitle: true, // Centers the title
+        title: Text(
+          'Create Route for Delivery',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
+
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -100,15 +117,26 @@ class _AddRoutePageState extends State<AddRoutePage> {
           children: [
             TextField(
               controller: _routeNameController,
-              decoration: InputDecoration(labelText: 'Route Name'),
+              decoration: InputDecoration(
+                labelText: 'Route Name',
+                border: OutlineInputBorder(),
+              ),
             ),
+            SizedBox(height: 10),
             TextField(
               controller: _vehicleIdController,
-              decoration: InputDecoration(labelText: 'Vehicle ID'),
+              decoration: InputDecoration(
+                labelText: 'Vehicle ID',
+                border: OutlineInputBorder(),
+              ),
             ),
+            SizedBox(height: 10),
             TextField(
               controller: _orderIdController,
-              decoration: InputDecoration(labelText: 'Order ID'),
+              decoration: InputDecoration(
+                labelText: 'Order ID',
+                border: OutlineInputBorder(),
+              ),
             ),
             SizedBox(height: 20),
             Text(
@@ -117,37 +145,67 @@ class _AddRoutePageState extends State<AddRoutePage> {
             ),
             TextField(
               controller: _latController,
-              decoration: InputDecoration(labelText: 'Latitude'),
+              decoration: InputDecoration(
+                labelText: 'Latitude',
+                border: OutlineInputBorder(),
+              ),
               keyboardType: TextInputType.number,
             ),
+            SizedBox(height: 10),
             TextField(
               controller: _lngController,
-              decoration: InputDecoration(labelText: 'Longitude'),
+              decoration: InputDecoration(
+                labelText: 'Longitude',
+                border: OutlineInputBorder(),
+              ),
               keyboardType: TextInputType.number,
             ),
+            SizedBox(height: 10),
             TextField(
               controller: _timeWindowController,
               decoration: InputDecoration(
-                  labelText: 'Time Window (Optional, e.g., 10:00-12:00)'),
+                labelText: 'Time Window (Optional, e.g., 10:00-12:00)',
+                border: OutlineInputBorder(),
+              ),
             ),
-            DropdownButton<String>(
-              value: _natureOfDestination,
-              onChanged: (String? newValue) {
-                setState(() {
-                  _natureOfDestination = newValue!;
-                });
-              },
-              items: <String>['Drop', 'Pickup', 'Break']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+            SizedBox(height: 10),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: DropdownButton<String>(
+                isExpanded: true,
+                value: _natureOfDestination,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _natureOfDestination = newValue!;
+                  });
+                },
+                items: ['Drop', 'Pickup', 'Break']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
             ),
-            ElevatedButton(
-              onPressed: _addNode,
-              child: Text('Add Job'),
+            SizedBox(height: 10),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _addNode,
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  backgroundColor: Colors.blue,
+                ),
+                child: Text(
+                  'Add Job',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
             ),
             SizedBox(height: 20),
             Text(
@@ -156,6 +214,7 @@ class _AddRoutePageState extends State<AddRoutePage> {
             ),
             ListView.builder(
               shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemCount: _nodes.length,
               itemBuilder: (context, index) {
                 final node = _nodes[index];
@@ -168,9 +227,19 @@ class _AddRoutePageState extends State<AddRoutePage> {
               },
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _submitRoute,
-              child: Text('Submit Route'),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _submitRoute,
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  backgroundColor: Colors.blue,
+                ),
+                child: Text(
+                  'Submit Route',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
             ),
           ],
         ),

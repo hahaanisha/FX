@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'auth/loginPage.dart';
 import 'customer/cHomePage.dart';
+import 'customer/navbarC.dart';
 import 'driver/DRouteNo.dart';
 import 'screens/input.dart';
 import 'screens/mapScreen.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginPage(),
+      home:Bottomnavbar(),
     );
   }
 }

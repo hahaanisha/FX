@@ -1,63 +1,44 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../customer/cHomePage.dart';
+import 'signUp.dart';
 
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class LoginPager extends StatefulWidget {
+  const LoginPager({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginPagerState createState() => _LoginPagerState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPagerState extends State<LoginPager> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isLoading = false;
 
-  Future<void> _signIn() async {
-    setState(() {
-      _isLoading = true;
-    });
-
+  Future<void> _login() async {
     try {
-      final credential = await _auth.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
       );
-      setState(() {
-        _isLoading = false;
-      });
 
-      // Navigate to the next screen on successful sign-in
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => AdminPortal()),
-      );
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-      String errorMessage;
-      if (e.code == 'user-not-found') {
-        errorMessage = 'No user found for that email.';
-      } else if (e.code == 'wrong-password') {
-        errorMessage = 'Wrong password provided.';
-      } else {
-        errorMessage = 'Something went wrong. Please try again.';
+      User? user = userCredential.user;
+      if (user != null) {
+        String name = user.displayName ?? "User"; // Fetch display name or fallback to "User"
+        String userUID = user.uid;
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AdminPortal(),
+          ),
+        );
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
-      );
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred. Please try again.')),
+        SnackBar(content: Text('Login failed: $e')),
       );
     }
   }
@@ -72,18 +53,8 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
-              const SizedBox(height: 20),
               const Text(
-                'Welcome back to',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black54,
-                ),
-              ),
-              const Text(
-                'Optiway',
+                'Welcome Mastek',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -92,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 10),
               const Text(
-                'sign in to access your account',
+                'Sign in to access your account',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.black45,
@@ -144,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {}, // Add password reset logic here
                     child: const Text(
                       'Forget password?',
                       style: TextStyle(color: Colors.blue),
@@ -153,12 +124,10 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               const SizedBox(height: 20),
-              _isLoading
-                  ? const CircularProgressIndicator()
-                  : SizedBox(
+              SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _signIn,
+                  onPressed: _login,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue.shade900,
                     padding: const EdgeInsets.symmetric(vertical: 14),
@@ -167,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   child: const Text(
-                    'Login',
+                    'LOGIN',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -186,10 +155,14 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
+                      // Navigate to the registration page
+                      Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => AdminPortal()),
+                        MaterialPageRoute(
+                          builder: (context) => SignUpPager(),
+                        ),
                       );
+
                     },
                     child: const Text(
                       'Register now',
