@@ -5,7 +5,9 @@ import 'AddRoutePage.dart';
 // import 'ViewOrdersPage.dart';
 
 class Bottomnavbar extends StatefulWidget {
-  const Bottomnavbar({super.key});
+  final dynamic UID;
+
+  const Bottomnavbar({super.key, required this.UID});
 
   @override
   State<Bottomnavbar> createState() => _BottomnavbarState();
@@ -14,14 +16,20 @@ class Bottomnavbar extends StatefulWidget {
 class _BottomnavbarState extends State<Bottomnavbar> {
   int _selectedIndex = 0;
 
-  static List<Widget> _pages = <Widget>[
-    AddVehiclePage(),
-    AddRoutePage(),
-    AddDriverPage(),
-    AddRoutePage(),
-    // AddDriverPage(),
-    // ViewOrdersPage(),
-  ];
+  late List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = <Widget>[
+      AddVehiclePage(UID: widget.UID),
+      AddRoutePage(UID: widget.UID),
+      AddDriverPage(UID: widget.UID),
+      AddRoutePage(UID: widget.UID),
+      // AddDriverPage(),
+      // ViewOrdersPage(),
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -40,7 +48,6 @@ class _BottomnavbarState extends State<Bottomnavbar> {
           ),
         ),
         backgroundColor: Colors.blue,
-
       ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(

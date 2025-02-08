@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'loginPage.dart';
 
-class SignUpPager extends StatefulWidget {
-  const SignUpPager({Key? key}) : super(key: key);
+class SignUpPageC extends StatefulWidget {
+  const SignUpPageC({Key? key}) : super(key: key);
 
   @override
-  _SignUpPagerState createState() => _SignUpPagerState();
+  _SignUpPageCState createState() => _SignUpPageCState();
 }
 
-class _SignUpPagerState extends State<SignUpPager> {
+class _SignUpPageCState extends State<SignUpPageC> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _agreeToTerms = false;
 
-  final DatabaseReference _recruiterDatabaseRef = FirebaseDatabase.instance.ref('recruiters');
+  final DatabaseReference _recruiterDatabaseRef = FirebaseDatabase.instance.ref('company');
 
   Future<void> _register() async {
     try {
@@ -43,7 +43,7 @@ class _SignUpPagerState extends State<SignUpPager> {
         // Navigate to the login page
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => LoginPager()),
+          MaterialPageRoute(builder: (context) => LoginPageC()),
         );
       }
     } catch (e) {
@@ -65,7 +65,7 @@ class _SignUpPagerState extends State<SignUpPager> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
-                'Reg Recruiter',
+                'Reg Company',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -169,7 +169,7 @@ class _SignUpPagerState extends State<SignUpPager> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPager()),
+                    MaterialPageRoute(builder: (context) => LoginPageC()),
                   );
                 },
                 child: const Text(

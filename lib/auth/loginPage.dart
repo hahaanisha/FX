@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../customer/cHomePage.dart';
+import '../customer/navbarC.dart';
+import 'loginPageD.dart';
 import 'signUp.dart';
 
 
-class LoginPager extends StatefulWidget {
-  const LoginPager({Key? key}) : super(key: key);
+class LoginPageC extends StatefulWidget {
+  const LoginPageC({Key? key}) : super(key: key);
 
   @override
-  _LoginPagerState createState() => _LoginPagerState();
+  _LoginPageCState createState() => _LoginPageCState();
 }
 
-class _LoginPagerState extends State<LoginPager> {
+class _LoginPageCState extends State<LoginPageC> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -32,7 +34,7 @@ class _LoginPagerState extends State<LoginPager> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => AdminPortal(),
+            builder: (context) => Bottomnavbar(UID: userUID,),
           ),
         );
       }
@@ -156,10 +158,10 @@ class _LoginPagerState extends State<LoginPager> {
                   TextButton(
                     onPressed: () {
                       // Navigate to the registration page
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SignUpPager(),
+                          builder: (context) => SignUpPageC(),
                         ),
                       );
 
@@ -184,7 +186,7 @@ class _LoginPagerState extends State<LoginPager> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SignUpPager(),
+                          builder: (context) => LoginPageD(),
                         ),
                       );
 

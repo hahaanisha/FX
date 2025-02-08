@@ -29,10 +29,10 @@ class AdminPortal extends StatelessWidget {
               height: 60,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddVehiclePage()),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => AddVehiclePage()),
+                  // );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -48,10 +48,10 @@ class AdminPortal extends StatelessWidget {
               height: 60,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddRoutePage()),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => AddRoutePage()),
+                  // );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -67,10 +67,10 @@ class AdminPortal extends StatelessWidget {
               height: 60,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DriverPortal()),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => DriverPortal()),
+                  // );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,

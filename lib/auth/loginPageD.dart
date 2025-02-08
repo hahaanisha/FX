@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../customer/cHomePage.dart';
+import '../driver/DRouteNo.dart';
 import 'signUp.dart';
 
 
-class LoginPager extends StatefulWidget {
-  const LoginPager({Key? key}) : super(key: key);
+class LoginPageD extends StatefulWidget {
+  const LoginPageD({Key? key}) : super(key: key);
 
   @override
-  _LoginPagerState createState() => _LoginPagerState();
+  _LoginPageDState createState() => _LoginPageDState();
 }
 
-class _LoginPagerState extends State<LoginPager> {
+class _LoginPageDState extends State<LoginPageD> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -32,7 +33,7 @@ class _LoginPagerState extends State<LoginPager> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => AdminPortal(),
+            builder: (context) => DriverPortal(UID: userUID,),
           ),
         );
       }
@@ -146,31 +147,7 @@ class _LoginPagerState extends State<LoginPager> {
                 ),
               ),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'New Member?',
-                    style: TextStyle(color: Colors.black54),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      // Navigate to the registration page
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUpPager(),
-                        ),
-                      );
 
-                    },
-                    child: const Text(
-                      'Register now',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  ),
-                ],
-              ),
             ],
           ),
         ),

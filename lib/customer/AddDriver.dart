@@ -4,6 +4,12 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class AddDriverPage extends StatefulWidget {
+
+  final dynamic UID;
+
+  AddDriverPage({super.key, required this.UID});
+
+
   @override
   _AddDriverPageState createState() => _AddDriverPageState();
 }
@@ -34,13 +40,14 @@ class _AddDriverPageState extends State<AddDriverPage> {
         _image != null) {
       final String customKey = _licenseNumberController.text.replaceAll(' ', '_');
 
-      await _dbRef.child(customKey).set({
+      await _dbRef.child(widget.UID).child(customKey).set({
         "name": _driverNameController.text,
         "licenseNumber": _licenseNumberController.text,
 
         "contactNumber": _contactNumberController.text,
         "isAvailable": _isAvailable,
         "imagePath": _image!.path, // Store local path (consider a different approach if needed)
+        "CUID": widget.UID
       });
 
       ScaffoldMessenger.of(context).showSnackBar(

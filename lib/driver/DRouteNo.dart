@@ -6,6 +6,14 @@ import 'package:http/http.dart' as http;
 import '../screens/mapScreen.dart';
 
 class DriverPortal extends StatefulWidget {
+
+
+  final dynamic UID;
+
+  DriverPortal({super.key, required this.UID});
+
+
+
   @override
   _DriverPortalState createState() => _DriverPortalState();
 }
@@ -21,7 +29,7 @@ class _DriverPortalState extends State<DriverPortal> {
   Future<void> fetchAndSendRouteData(String routeId) async {
     try {
       // Fetch route data from Firebase
-      DataSnapshot routeSnapshot = await _dbRef.child('routes/$routeId').get();
+      DataSnapshot routeSnapshot = await _dbRef.child('routes/${widget.UID}/$routeId').get();
       if (!routeSnapshot.exists) {
         throw Exception('Route ID not found');
       }

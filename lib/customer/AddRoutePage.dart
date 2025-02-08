@@ -3,35 +3,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../firebase_options.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
-    // Ensure Firebase Database works on Web
-    FirebaseDatabase.instance.setPersistenceEnabled(false);
-    FirebaseDatabase.instance.setPersistenceCacheSizeBytes(1000000);
-  } catch (e) {
-    print("Firebase Initialization Error: $e");
-  }
-
-  runApp(AdminPortalApp());
-}
-
-class AdminPortalApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: AddRoutePage(),
-    );
-  }
-}
 
 class AddRoutePage extends StatefulWidget {
+  final dynamic UID;
+
+  AddRoutePage({super.key, required this.UID});
+
+
   @override
   _AddRoutePageState createState() => _AddRoutePageState();
 }
@@ -77,7 +55,7 @@ class _AddRoutePageState extends State<AddRoutePage> {
       final String customKey =
       'ROU${_orderIdController.text}V${_vehicleIdController.text}'
           .replaceAll(' ', '_');
-      await _dbRef.child(customKey).set({
+      await _dbRef.child(widget.UID).child(customKey).set({
         "routeName": _routeNameController.text,
         "vehicleId": _vehicleIdController.text,
         "orderId": _orderIdController.text,
