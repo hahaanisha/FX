@@ -52,16 +52,28 @@ class _MapsPageState extends State<MapsPage> {
             .map((e) => LatLng((e[1] as num).toDouble(), (e[0] as num).toDouble()))
             .toList();
 
-        // Extract navigation steps
+        // Extract navigation steps safely
         steps = (data['features'][0]['properties']['segments'][0]['steps'] as List)
-            .map((step) => {
-          'instruction': step['instruction'],
-          'distance': (step['distance'] as num).toDouble(),
-          'duration': (step['duration'] as num).toDouble(),
-          'location': LatLng((step['way_points'][0][1] as num).toDouble(),
-              (step['way_points'][0][0] as num).toDouble()),
-        })
-            .toList();
+            .map((step) {
+          var wayPoints = step['way_points'] ?? []; // Ensure it’s a list
+          LatLng? stepLocation;
+
+          if (wayPoints.isNotEmpty && wayPoints[0] is List && wayPoints[0].length >= 2) {
+            stepLocation = LatLng(
+              (wayPoints[0][1] as num).toDouble(),
+              (wayPoints[0][0] as num).toDouble(),
+            );
+          } else {
+            stepLocation = LatLng(widget.sLat, widget.sLong); // Default fallback
+          }
+
+          return {
+            'instruction': step['instruction'],
+            'distance': (step['distance'] as num).toDouble(),
+            'duration': (step['duration'] as num).toDouble(),
+            'location': stepLocation,
+          };
+        }).toList();
 
         // Initialize vehicle location at start point
         vehicleLocation = LatLng(widget.sLat, widget.sLong);
@@ -74,9 +86,10 @@ class _MapsPageState extends State<MapsPage> {
       print("Route Points: $points");
       print("Navigation Steps: $steps");
     } else {
-      print('Error fetching route');
+      print('Error fetching route: ${response.body}');
     }
   }
+
 
   void startTrackingVehicle() {
     locationUpdateTimer?.cancel();
