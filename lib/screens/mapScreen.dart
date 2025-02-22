@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
 import 'api.dart';
 
 class MapsPage extends StatefulWidget {
@@ -12,6 +13,9 @@ class MapsPage extends StatefulWidget {
   final double eLat;
   final double eLong;
   final String vtype;
+  final LocationData? currentLocation;
+  final Function(LocationData)? onLocationUpdate;
+
 
   MapsPage({
     super.key,
@@ -20,6 +24,8 @@ class MapsPage extends StatefulWidget {
     required this.eLat,
     required this.eLong,
     required this.vtype,
+    this.currentLocation,
+    this.onLocationUpdate,
   });
 
   @override
