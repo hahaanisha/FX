@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'AddDriver.dart';
 import 'AddVehiclePage.dart';
 import 'AddRoutePage.dart';
+import 'departedPage.dart';
 // import 'ViewOrdersPage.dart';
 
 class Bottomnavbar extends StatefulWidget {
@@ -25,7 +26,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
       AddVehiclePage(UID: widget.UID),
       AddRoutePage(UID: widget.UID),
       AddDriverPage(UID: widget.UID),
-      AddRoutePage(UID: widget.UID),
+      DepartedPage(UID: widget.UID)
       // AddDriverPage(),
       // ViewOrdersPage(),
     ];

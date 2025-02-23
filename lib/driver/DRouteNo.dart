@@ -30,6 +30,9 @@ class _DriverPortalState extends State<DriverPortal> {
       Map<String, dynamic> routeData =
       Map<String, dynamic>.from(routeSnapshot.value as Map);
 
+      // Copy route data to 'departed' table
+      await _dbRef.child('departed/${widget.UID}/$routeId').set(routeData);
+
       List<Map<String, dynamic>> jobs = [];
       for (var i = 0; i < routeData['nodes'].length; i++) {
         final node = routeData['nodes'][i];
@@ -126,7 +129,7 @@ class _DriverPortalState extends State<DriverPortal> {
             ElevatedButton(
               onPressed: () =>
                   fetchAndSendRouteData(_routeIdController.text.trim()),
-              child: Text('Submit'),
+              child: Text('Start Navigation'),
             ),
           ],
         ),
