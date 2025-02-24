@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../driver/trackPagePro.dart';
 import 'AddDriver.dart';
 import 'AddVehiclePage.dart';
 import 'AddRoutePage.dart';
@@ -26,7 +27,8 @@ class _BottomnavbarState extends State<Bottomnavbar> {
       AddVehiclePage(UID: widget.UID),
       AddRoutePage(UID: widget.UID),
       AddDriverPage(UID: widget.UID),
-      DepartedPage(UID: widget.UID)
+      DepartedPage(UID: widget.UID),
+      TrackingPagePro()
       // AddDriverPage(),
       // ViewOrdersPage(),
     ];
@@ -70,6 +72,10 @@ class _BottomnavbarState extends State<Bottomnavbar> {
           BottomNavigationBarItem(
             icon: Icon(Icons.local_shipping, color: Colors.white),
             label: 'Dispatched Orders',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.navigation, color: Colors.white),
+            label: 'Tracking',
           ),
         ],
         currentIndex: _selectedIndex,
