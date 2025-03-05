@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gehraneela/driver/trackPagePro.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
@@ -31,6 +32,12 @@ class _TrackingPageState extends State<TrackingPage> {
 
       if (start is List && end is List && start.length == 2 && end.length == 2) {
         setState(() {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TrackingPagePro(slat: start[1],slong: start[0],elat:end[1] ,elong: end[0],),
+            ),
+          );
           trackingUrl =
           "https://tracking-blush.vercel.app/create/111/${start[1]}/${start[0]}/${end[1]}/${end[0]}";
         });

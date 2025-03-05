@@ -28,7 +28,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
       AddRoutePage(UID: widget.UID),
       AddDriverPage(UID: widget.UID),
       DepartedPage(UID: widget.UID),
-      TrackingPagePro()
+      // TrackingPagePro()
       // AddDriverPage(),
       // ViewOrdersPage(),
     ];
