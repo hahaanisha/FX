@@ -56,7 +56,7 @@ class _LoginPageCState extends State<LoginPageC> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Welcome Mastek',
+                'Welcome Back!',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,

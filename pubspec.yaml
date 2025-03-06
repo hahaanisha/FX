@@ -51,6 +51,7 @@ dependencies:
   webview_flutter_android: ^3.10.0
   permission_handler: ^11.4.0
   flutter_tts: ^4.2.2
+  geocoding: ^3.0.0
 
 
 
