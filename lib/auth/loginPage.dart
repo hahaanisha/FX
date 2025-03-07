@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../admin/AdminDashboard.dart';
 import '../customer/cHomePage.dart';
 import '../customer/navbarC.dart';
 import 'loginPageD.dart';
@@ -193,6 +194,31 @@ class _LoginPageCState extends State<LoginPageC> {
                     },
                     child: const Text(
                       'Sign in Here',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Go To ',
+                    style: TextStyle(color: Colors.black54),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // Navigate to the registration page
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AdminDashboard(),
+                        ),
+                      );
+
+                    },
+                    child: const Text(
+                      'Admin Dashboard',
                       style: TextStyle(color: Colors.blue),
                     ),
                   ),
