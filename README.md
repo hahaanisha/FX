@@ -1,7 +1,7 @@
 # 🚛 FleetX – Your Fleet, Perfectly Optimized
 
 <p align="center">
-  <img src="assets/FleetX.png" alt="Architecture Diagram" style="width:300px;" />
+  <img src="assets/FleetX.png" alt="Logo" style="width:300px;" />
 </p>
 
 FleetX is a real-time fleet route optimization solution designed for logistics companies to minimize delivery time, fuel costs, and inefficiencies through intelligent routing and multi-vehicle coordination.
@@ -13,7 +13,9 @@ Logistics companies often face high travel distances, unpredictable delays, and 
 ---
 
 ## ✨ Features
-
+<p align="center">
+  <img src="assets/architecture.png" alt="Architecture Diagram" style="width:700px;" />
+</p>
 - 📍 **Smart Route Planning** using OpenRouteService (ORS)
 - 🚦 **Real-Time Traffic-Based Adjustments**
 - 🚚 **Multi-Vehicle Optimization**
@@ -52,5 +54,5 @@ Logistics companies often face high travel distances, unpredictable delays, and 
 ### Clone the Repo
 
 ```bash
-git clone https://github.com/your-username/fleetx.git
+git clone https://github.com/hahaanisha/fleetx.git
 cd fleetx
