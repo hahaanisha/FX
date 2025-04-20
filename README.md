@@ -1,7 +1,7 @@
 # 🚛 FleetX – Your Fleet, Perfectly Optimized
 
 <p align="center">
-  <img src="assets/.logo.png" alt="Architecture Diagram" style="width:700px;" />
+  <img src="assets/FleetX.png" alt="Architecture Diagram" style="width:300px;" />
 </p>
 
 FleetX is a real-time fleet route optimization solution designed for logistics companies to minimize delivery time, fuel costs, and inefficiencies through intelligent routing and multi-vehicle coordination.
