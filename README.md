@@ -16,6 +16,7 @@ Logistics companies often face high travel distances, unpredictable delays, and 
 <p align="center">
   <img src="assets/architecture.png" alt="Architecture Diagram" style="width:700px;" />
 </p>
+
 - 📍 **Smart Route Planning** using OpenRouteService (ORS)
 - 🚦 **Real-Time Traffic-Based Adjustments**
 - 🚚 **Multi-Vehicle Optimization**
