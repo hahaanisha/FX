@@ -1,16 +1,56 @@
-# gehraneela
+# 🚛 FleetX – Your Fleet, Perfectly Optimized
 
-A new Flutter project.
+<p align="center">
+  <img src="assets/.logo.png" alt="Architecture Diagram" style="width:700px;" />
+</p>
 
-## Getting Started
+FleetX is a real-time fleet route optimization solution designed for logistics companies to minimize delivery time, fuel costs, and inefficiencies through intelligent routing and multi-vehicle coordination.
 
-This project is a starting point for a Flutter application.
+## 🧠 Problem Statement
 
-A few resources to get you started if this is your first Flutter project:
+Logistics companies often face high travel distances, unpredictable delays, and inefficient manual route planning. FleetX solves this by dynamically optimizing delivery routes based on real-time traffic, vehicle capacity, and delivery priorities.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## ✨ Features
+
+- 📍 **Smart Route Planning** using OpenRouteService (ORS)
+- 🚦 **Real-Time Traffic-Based Adjustments**
+- 🚚 **Multi-Vehicle Optimization**
+- 📦 **Goods & Load Tracking**
+- ⏱ **Accurate ETA Calculation**
+- 🌐 **WebSocket-Based Live Room Tracking**
+- 🔄 **Dynamic Dispatch Assignment**
+- 📲 **Driver & Admin Dashboard (Flutter)**
+
+---
+
+## 🛠 Tech Stack
+
+| Component     | Tech Used                    |
+|--------------|-------------------------------|
+| **Frontend** | Flutter, Flutter Maps          |
+| **Backend**  | Firebase (Firestore, Auth, RTDB) |
+| **Routing API** | OpenRouteService (ORS – Directions API) |
+| **Live Updates** | WebSockets for room-based tracking |
+| **Deployment** | Render (Backend Hosting) |
+
+---
+
+## 🧪 MVP Scope
+
+- Real-time optimized route generation
+- Support for multiple delivery stops
+- Live fleet tracking with ETA updates
+- Goods addition & tracking by dispatchers
+- Scalable architecture for growing fleets
+
+---
+
+## ⚙️ Installation & Setup
+
+### Clone the Repo
+
+```bash
+git clone https://github.com/your-username/fleetx.git
+cd fleetx
