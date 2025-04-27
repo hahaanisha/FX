@@ -8,7 +8,13 @@ FleetX is a real-time fleet route optimization solution designed for logistics c
 
 ## 🧠 Problem Statement
 
-Logistics companies often face high travel distances, unpredictable delays, and inefficient manual route planning. FleetX solves this by dynamically optimizing delivery routes based on real-time traffic, vehicle capacity, and delivery priorities.
+Logistics companies often face high travel distances, unpredictable delays, and inefficient manual route planning. FleetX solves this by dynamically optimizing delivery routes based on real-time traffic, vehicle capacity, and delivery priorities
+
+Check FleetX's website here:  
+👉 [Visit Website](https://fleetx.framer.website/)
+
+View the FleetX's pamphlet here:  
+📄 [Open Pamphlet](https://publuu.com/flip-book/860665/1886313)
 
 ---
 
